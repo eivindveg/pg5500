@@ -24,21 +24,27 @@
     <ClInclude Include="AlarmDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AlarmService.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="TimeService.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ControllerService.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AlarmService.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AlarmDisplay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AlarmService.cpp">
+    <ClCompile Include="TimeService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TimeService.cpp">
+    <ClCompile Include="ControllerService.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AlarmService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
