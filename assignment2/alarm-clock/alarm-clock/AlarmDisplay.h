@@ -1,6 +1,7 @@
 #pragma once
 #include <TFT.h>
 #include <RTClib.h>
+#include "ControllerService.h"
 
 class AlarmDisplay {
 public:
@@ -10,12 +11,17 @@ public:
 	void updateTime(DateTime& dateTime);
 
 	void updateAlarm(DateTime* alarm);
+	bool isEditMode() const;
+	void setEditMode(bool mode);
+	void setSelection(ControllerService::TimeSelection selection);
 private:
 	TFT* tft;
 	DateTime* previousDateTime = NULL;
 	DateTime* previousAlarm = NULL;
+	bool editMode = false;
 	String daysOfTheWeek[7] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 	String months[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+	ControllerService::TimeSelection selection;
 	static String getSuffixForInteger(uint8_t day);
 	int16_t getMiddleLeftX(String value, int16_t widthPerSize) const;
 	int16_t getMiddleRightX(String value, int16_t widthPerSize) const;

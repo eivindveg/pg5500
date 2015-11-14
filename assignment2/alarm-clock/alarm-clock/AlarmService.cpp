@@ -23,12 +23,20 @@ void AlarmService::checkAlarm(DateTime& now) {
 		alarm = NULL;
 	}
 
-	if(isAlarmSet()) {
-		TimeSpan diff = *alarm - now;
-		if(diff.seconds() <= 0) {
+	if (isAlarmSet()) {
+		TimeSpan diff = DateTime(now.year(), now.month(), now.day(), alarm->hour(), alarm->minute(), 0) - DateTime(now.year(), now.month(), now.day(), now.hour(), now.minute(), now.second());
+		if (diff.hours() == 0 && diff.minutes() > -5 && diff.seconds() <= 0) {
 			play();
 		}
 	}
+}
+
+DateTime* AlarmService::createAlarm() {
+	if (isAlarmSet()) {
+		free(alarm);
+	}
+	alarm = new DateTime(0U, 0U, 0U);
+	return alarm;
 }
 
 void AlarmService::play() const {
@@ -36,3 +44,4 @@ void AlarmService::play() const {
 
 	delay(600);
 }
+

@@ -84,10 +84,7 @@ void AlarmDisplay::drawAlarmFully(DateTime& alarm) {
 }
 
 void AlarmDisplay::clearAlarmDisplay() {
-	drawAlarmHeader("               ");
-	drawAlarmSeparator(" ");
-	drawAlarmHour("  ");
-	drawAlarmMinute("  ");
+	tft->fillRect(0, 70, tft->width(), 80, RECT_FILL);
 
 }
 
@@ -95,13 +92,46 @@ void AlarmDisplay::updateAlarm(DateTime* alarm) {
 	if (previousAlarm == NULL && alarm != NULL) {
 		drawAlarmFully(*alarm);
 	} else if (alarm == NULL) {
+		Serial.println("Clearing display");
 		clearAlarmDisplay();
 	} else {
-		// update changed fields
+		if (previousAlarm->hour() != alarm->hour() || isEditMode()) {
+			Serial.println("Updating alarm hour");
+			String value = static_cast<String>(alarm->hour());
+			if (value.length() == 1) {
+				value = "0" + value;
+			}
+			drawAlarmHour(value);
+		}
+		if (previousAlarm->minute() != alarm->minute() || isEditMode()) {
+			Serial.println("Updating alarm minute");
+			String value = static_cast<String>(alarm->minute());
+			if (value.length() == 1) {
+				value = "0" + value;
+			}
+			drawAlarmMinute(value);
+		}
 	}
 
 	free(previousAlarm);
 	previousAlarm = new DateTime(*alarm);
+}
+
+bool AlarmDisplay::isEditMode() const {
+	return editMode;
+}
+
+void AlarmDisplay::setEditMode(bool mode) {
+	if(mode != editMode) {
+		editMode = mode;
+		drawAlarmFully(*previousAlarm);
+	}
+}
+
+void AlarmDisplay::setSelection(ControllerService::TimeSelection selection) {
+	if (this->selection != selection) {
+		this->selection = selection;
+	}
 }
 
 void AlarmDisplay::drawFully(DateTime& dateTime) {
@@ -141,13 +171,15 @@ void AlarmDisplay::drawAlarmHeader(String value) {
 }
 
 void AlarmDisplay::drawAlarmHour(String value) {
-
+	if (value.length() > 2) {
+		return;
+	}
 	int firstX = getMiddleLeftX(value, 2 * WIDTH_PER_SIZE);
 	int secondX = getMiddleX(value, 2 * WIDTH_PER_SIZE);
 
 	int x = (firstX + secondX) / 2;
-
-	tft->fillRect(x, 80, (value.length() * 2 * WIDTH_PER_SIZE) - 2, 2 * HEIGHT_PER_SIZE, RECT_FILL);
+	uint16_t fill = selection == ControllerService::Hour && isEditMode() ? ST7735_YELLOW : RECT_FILL;
+	tft->fillRect(x, 80, (value.length() * TIME_SIZE * WIDTH_PER_SIZE) - TIME_SIZE, TIME_SIZE * HEIGHT_PER_SIZE, fill);
 	tft->setTextColor(ST7735_RED);
 	tft->setCursor(x, 80);
 	tft->setTextSize(2);
@@ -155,12 +187,16 @@ void AlarmDisplay::drawAlarmHour(String value) {
 }
 
 void AlarmDisplay::drawAlarmMinute(String value) {
+	if(value.length() > 2) {
+		return;
+	}
 	int firstX = getMiddleRightX(value, TIME_SIZE * WIDTH_PER_SIZE);
 	int secondX = getMiddleX(value, TIME_SIZE * WIDTH_PER_SIZE);
 
 	int x = (firstX + secondX) / 2;
 
-	tft->fillRect(x, 80, (value.length() * TIME_SIZE * WIDTH_PER_SIZE) - TIME_SIZE, TIME_SIZE * HEIGHT_PER_SIZE, RECT_FILL);
+	uint16_t fill = selection == ControllerService::Minute && isEditMode() ? ST7735_YELLOW : RECT_FILL;
+	tft->fillRect(x, 80, (value.length() * TIME_SIZE * WIDTH_PER_SIZE) - TIME_SIZE, TIME_SIZE * HEIGHT_PER_SIZE, fill);
 	tft->setTextColor(ST7735_RED);
 	tft->setCursor(x, 80);
 	tft->setTextSize(2);

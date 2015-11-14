@@ -16,6 +16,7 @@ public:
 	bool isAlarmSet() const;
 	
 	void checkAlarm(DateTime& now);
+	DateTime* createAlarm();
 private:
 	int8_t speakerPin;
 	uint8_t buttonPin;

@@ -15,47 +15,24 @@ ControllerService::ControllerService(uint8_t vrX, uint8_t vrY, uint8_t sw) {
 
 bool ControllerService::isClicked() {
 	int read = digitalRead(buttonPin);
-	Serial.print("Read: ");
-	Serial.println(read == HIGH ? "high" : "low");
-
-	return read == HIGH;
+	return read == LOW;
 }
 
 ControllerService::TimeSelection ControllerService::readSelection() {
-	int read = analogRead(xPin);
-	if (read <= 256) {
-		decrementCurrentSelection();
-	} else if (read >= 768) {
-		incrementCurrentSelection();
+	int read = analogRead(yPin);
+	if (read <= 256 || read >= 768) {
+		selection = selection == Minute ? Hour : Minute;
 	}
 	return selection;
 }
 
-void ControllerService::incrementCurrentSelection() {
-	TimeSelection newSelection;
-	switch (selection) {
-	case Hour: newSelection = Minute;
-		break;
-	case Minute: newSelection = Second;
-		break;
-	case Second: newSelection = Hour;
-		break;
-	default: newSelection = Hour;
+ControllerService::TimeAdjustment ControllerService::readAdjustment() const {
+	int read = analogRead(xPin);
+	if(read >= 768) {
+		return Decrement;
 	}
-	selection = newSelection;
-}
-
-void ControllerService::decrementCurrentSelection() {
-	TimeSelection newSelection;
-	switch (selection) {
-	case Hour: newSelection = Second;
-		break;
-	case Minute: newSelection = Hour;
-		break;
-	case Second: newSelection = Minute;
-		break;
-	default: newSelection = Hour;
+	if(read <= 256) {
+		return Increment;
 	}
-	selection = newSelection;
+	return None;
 }
-
