@@ -29,7 +29,7 @@
 #define GCC_VERSION 40801
 #define volatile(va_arg) 
 #define _CONST
-typedef void* __builtin_va_list;
+typedef void *__builtin_va_list;
 #define __builtin_va_start
 #define __builtin_va_end
 //#define __DOXYGEN__
@@ -62,10 +62,8 @@ typedef void* __builtin_va_list;
 #endif            
 */
 typedef unsigned char byte;
+extern "C" void __cxa_pure_virtual() {;}
 
-extern "C" void __cxa_pure_virtual() {
-	;
-}
 
 
 #include <arduino.h>
@@ -91,7 +89,8 @@ extern "C" void __cxa_pure_virtual() {
 #include <..\alarm-clock\AlarmDisplay.h>
 #include <..\alarm-clock\AlarmService.cpp>
 #include <..\alarm-clock\AlarmService.h>
+#include <..\alarm-clock\ControllerService.cpp>
+#include <..\alarm-clock\ControllerService.h>
 #include <..\alarm-clock\TimeService.cpp>
 #include <..\alarm-clock\TimeService.h>
 #endif
-

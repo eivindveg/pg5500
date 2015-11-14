@@ -14,7 +14,6 @@ TimeService::TimeService() {
 	}
 }
 
-DateTime TimeService::now() {
+DateTime TimeService::now() const {
 	return rtc.now();
 }
-

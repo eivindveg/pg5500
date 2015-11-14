@@ -5,8 +5,9 @@
 class TimeService {
 public:
 	TimeService();
-	DateTime now();
+	DateTime now() const;
 private:
 	RTC_DS1307 rtc;
+	DateTime* alarm = NULL;
 };
 
