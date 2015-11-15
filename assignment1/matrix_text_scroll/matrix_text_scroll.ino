@@ -6,9 +6,9 @@
 #define MATRIX_SIZE 8
 
 /**
- * pin 12 is connected to DataIn
- * pin 11 is connected to CLK
- * pin 10 is connected to LOAD
+ * pin 12: DataIn
+ * pin 11: CLK
+ * pin 10: LOAD
  */
 LedControl leds = LedControl(10, 9, 8, 1);
 
@@ -154,7 +154,7 @@ const byte *getSpecialChar(byte value) {
   if(value == 197) {
     return ARING;
   }
-
+  
   // Handle potential junk
   return SPACE; 
 }
