@@ -2,7 +2,6 @@
 #include <RTClib.h>
 #include <SPI.h>
 #include <TFT.h>
-#include <SoftwareSerial.h>
 #include <doxygen.h>
 
 #include "TimeService.h"
