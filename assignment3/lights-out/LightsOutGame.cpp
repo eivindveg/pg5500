@@ -2,6 +2,7 @@
 
 LightsOutGame::LightsOutGame(Adafruit_ST7735& tft, uint16_t highScore) {
 	this->tft = &tft;
+	pinMode(A5, OUTPUT);
 
 	for (int y = 0; y < ROWS; y++) {
 		for (int x = 0; x < COLUMNS; x++) {
@@ -11,7 +12,7 @@ LightsOutGame::LightsOutGame(Adafruit_ST7735& tft, uint16_t highScore) {
 
 	int selected = 0;
 	Serial.println("Seeding lights.");
-	randomSeed(analogRead(A5));
+	randomSeed(analogRead(A4));
 	while (selected < 4) {
 		uint8_t randomColumn = random(0, 4);
 		uint8_t randomRow = random(0, 4);
@@ -57,15 +58,17 @@ LightsOutGame::~LightsOutGame() {
 void LightsOutGame::handleMove(InputType moveDirection) {
 	uint8_t oldX = currentX;
 	uint8_t oldY = currentY;
-	if (moveDirection == InputType::RIGHT && currentX <= COLUMNS - 1) {
+	if (moveDirection == InputType::RIGHT && currentX < COLUMNS - 1) {
 		currentX++;
 	} else if (moveDirection == InputType::LEFT && currentX > 0) {
 		currentX--;
-	} else if (moveDirection == InputType::DOWN && currentY <= ROWS - 1) {
+	} else if (moveDirection == InputType::DOWN && currentY < ROWS - 1) {
 		currentY++;
 	} else if (moveDirection == InputType::UP && currentY > 0) {
 		currentY--;
 	}
+
+	tone(A5, MOVE_SOUND_FREQ, 100);
 
 	drawLight(oldX, oldY);
 	drawLight(currentX, currentY);
@@ -73,6 +76,8 @@ void LightsOutGame::handleMove(InputType moveDirection) {
 
 bool LightsOutGame::handleClick() {
 	toggleLight(currentX, currentY);
+
+	tone(A5, CLICK_SOUND_FREQ, 100);
 
 	if (currentX >= 1) {
 		toggleLight(currentX - 1, currentY);
@@ -96,6 +101,8 @@ bool LightsOutGame::handleClick() {
 			}
 		}
 	}
+
+	playVictoryTune();
 
 	return true;
 }
@@ -142,6 +149,17 @@ void LightsOutGame::drawLight(uint8_t x, uint8_t y) {
 	if (currentX == x && currentY == y) {
 		tft->drawCircle(xPos, yPos, 7, ST7735_CYAN);
 		tft->drawCircle(xPos, yPos, 6, ST7735_CYAN);
+	}
+}
+
+void LightsOutGame::playVictoryTune() {
+	for (int thisNote = 0; thisNote < NOTES_IN_VICTORY_TUNE; thisNote++) {
+
+		int noteDuration = 1000 / victoryTuneDurations[thisNote];
+		tone(A5, victoryTune[thisNote], noteDuration);
+		int pauseBetweenNotes = noteDuration * 1.30;
+		delay(pauseBetweenNotes);
+		noTone(A5);
 	}
 }
 

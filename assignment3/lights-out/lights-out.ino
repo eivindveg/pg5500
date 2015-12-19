@@ -1,4 +1,5 @@
 #pragma once
+#include <EEPROM.h>
 #include <arduino.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7735.h>

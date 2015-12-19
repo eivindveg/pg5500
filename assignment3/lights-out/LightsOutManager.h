@@ -15,6 +15,8 @@ private:
 	LightsOutGame* game = NULL;
 	InputManager* inputManager;
 	InputType lastInput;
+	uint16_t highScore = 0;
 	virtual uint16_t getHighScore();
 	virtual void saveHighScore(uint16_t newHighScore);
+	virtual void drawStart();
 };

@@ -92,4 +92,5 @@ extern "C" void __cxa_pure_virtual() {;}
 #include <..\lights-out\LightsOutGame.h>
 #include <..\lights-out\LightsOutManager.cpp>
 #include <..\lights-out\LightsOutManager.h>
+#include <..\lights-out\pitches.h>
 #endif
