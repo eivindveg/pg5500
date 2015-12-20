@@ -13,7 +13,7 @@ LightsOutGame::LightsOutGame(Adafruit_ST7735& tft, uint16_t highScore) {
 	int selected = 0;
 	Serial.println("Seeding lights.");
 	randomSeed(analogRead(A4));
-	while (selected < 4) {
+	while (selected < STARTS_ON) {
 		uint8_t randomColumn = random(0, 4);
 		uint8_t randomRow = random(0, 4);
 
@@ -44,7 +44,7 @@ LightsOutGame::LightsOutGame(Adafruit_ST7735& tft, uint16_t highScore) {
 	this->tft->setCursor(10, (this->tft->height() / 2));
 	this->tft->print(moves);
 	this->tft->setCursor(10, (this->tft->height() / 2) + 20);
-	this->tft->print("High score:");
+	this->tft->print("Best:");
 	this->tft->setCursor(10, (this->tft->height() / 2) + 30);
 	this->tft->print(highScore);
 
@@ -164,7 +164,7 @@ void LightsOutGame::playVictoryTune() {
 }
 
 int16_t LightsOutGame::getXPositionForLight(uint8_t x) {
-	return (tft->width() / 2) + x * 17;
+	return (tft->width() / 2) + (x * 17) - 20;
 }
 
 int16_t LightsOutGame::getYPositionForLight(uint8_t y) {

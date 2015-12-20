@@ -3,8 +3,9 @@
 #include "pitches.h"
 #include "InputType.h"
 
-#define COLUMNS 5
+#define COLUMNS 6
 #define ROWS 5
+#define STARTS_ON 6
 #define MOVE_SOUND_FREQ 196
 #define CLICK_SOUND_FREQ 262
 #define NOTES_IN_VICTORY_TUNE 9
